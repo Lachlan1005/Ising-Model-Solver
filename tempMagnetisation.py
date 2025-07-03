@@ -85,6 +85,8 @@ def magnetisationTemperature(N:int,J:float,Tmin:float,Tmax:float,dT:float):
         print("Current Temperature=", T, "|| Maximum Temperature=", Tmax)
         T+=dT
         i+=1
+    print(30*"\n")
+    print("Solving complete. See output plot for results.")
     plt.plot(temps,mags,color="black")
     plt.title("Magnetisation vs Temperature, N="+str(N))
     plt.xlabel("Temperature")
@@ -92,4 +94,16 @@ def magnetisationTemperature(N:int,J:float,Tmin:float,Tmax:float,dT:float):
     plt.show()
     return temps, mags
 
-magnetisationTemperature(10,1,1.5,3.2,0.01)
+def terminalMagnetisationTemp():
+    print(100*"=")
+    print("Welcome to the Magnetisation-Temperature Plotter")
+    N=int(input("Enter the size (N) of the NxN lattice: "))
+    J=float(input("Enter the interaction strength: "))
+    Tmin=float(input("Enter the minimum temperature: "))
+    Tmax=float(input("Enter the maximum temperature: "))
+    dT=float(input("Enter the temperature step: "))
+    print(100*"=")
+    return magnetisationTemperature(N,J,Tmin,Tmax,dT)
+
+#magnetisationTemperature(10,1,1.5,3.2,0.01)
+terminalMagnetisationTemp()
