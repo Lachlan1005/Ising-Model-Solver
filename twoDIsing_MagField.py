@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 import imageio
 import random as rd
 import os
-import twoDIsing_NoMagField as tDI
+import twoDIsing as tDI
 
 def metropolisMagnetisation(N:int,J:float, T:float, H:float, maxIters:int=50000, fpsCustom=100, verbosity:bool=True, lattice:list[list[int]] | None =None):
     """
