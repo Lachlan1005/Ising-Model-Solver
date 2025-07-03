@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{bm}
+\usepackage[top=1.3 in, bottom=1.2in]{geometry}
 \usepackage{physics}
 \usepackage{fancyhdr}
 \usepackage{pgfplots}
@@ -33,11 +34,14 @@ the energy depends on how different their spins are. To model this, we say that
 \begin{align}
     \hat{H}_{int,\ n}\propto\hat{S}_z^n \hat{S}_z^{n+1}
 \end{align}
-Where the product is our measure of their difference in spins. In a lattice with $N$ sites, we can add this up to find 
-the total interaction energy. Notice that we are summing until $N-1$ since the $N-1$ term will automatically 
-interact with the $N$ term, due to the $n+1$ in the operation. 
+Where the product is our measure of their difference in spins.
+ In a lattice with $N$ sites, we can add this up to find 
+the total interaction energy (Since it is indexed from 0, a lattice with $N$ sites 
+will have indeces from $0$ to $N-1$). 
+Notice that when $n=N-2$, the interaction term will automatically include the $N-1$th site due to 
+the $n+1$ present there. 
 \begin{align}
-    \hat{H}_{int}=-J\sum_{n=0}^{N-1}\hat{S}_z^n \hat{S}_z^{n+1}
+    \hat{H}_{int}=-J\sum_{n=0}^{N-2}\hat{S}_z^n \hat{S}_z^{n+1}
 \end{align}
 Where the constant of proportionality is the coupling constant $J$. It is customary to append a negative sign due to convention. 
 Suppose we subject the lattice to an external magnetic field of strength $h$, which tends to 
@@ -49,7 +53,7 @@ found by
 Where the negative sign is once again due to convention. 
 To find the total energy, we simply sum the energies from (2) and (3), giving 
 \begin{align}
-    \hat{H}=-J\sum_{n=0}^{N-1}\hat{S}_z^n \hat{S}_z^{n+1}-h\sum_{n=0}^N\hat{S}_x^n
+    \hat{H}=-J\sum_{n=0}^{N-2}\hat{S}_z^n \hat{S}_z^{n+1}-h\sum_{n=0}^N\hat{S}_x^n
 \end{align}
 Notice that the hamiltonian consists of two competing terms trying to influence the spins of the electrons: the interaction term and the field term. 
 When $J>>h$, the interaction term takes over, 
@@ -85,8 +89,10 @@ energy eigenvalues $E$ will be an exponentially more arduous task with every inc
 energy levels, while solving for the eigenvectors $\ket{\psi}$ gives the state of the whole lattice.
 
 \section{Computing the Spins}
-The spins of each site can either be up or down. Since the electrons can have spin $S_z^n=\pm 1/2$, spin up will be 
-assigned to $+1/2$ and spin down to $-1/2$. To obtain this spin, we first find the expectation value of the $\ket{\psi}$ computed in the last section 
+The spins of each site can either be up or down. For simplicity and 
+ease of computation, we will assign electrons 
+a spin of $\pm1$ (See appendix). Spin up will be 
+assigned to $+1$ and spin down to $-1$. To obtain this spin, we first find the expectation value of the $\ket{\psi}$ computed in the last section 
 when applied to by $\hat{S}^n_z$ (computed in section 2), which gives 
 \begin{align}
     S^n_z=\bra{\psi}\hat{S}^n_z\ket{\psi}
@@ -99,9 +105,9 @@ the same process can be repeated but with the $\hat{S}^n_x$ computed in section 
 The Ising model can be further generalised into 2 dimensions. Now, for any 
 given site $i$, 
 the electron can interact with any of its nearest neighbour 
-sites $j$. The Hamiltonian now reads 
+sites $j$. The Hamiltonian, under no external magnetic field, now reads 
 \begin{align}
-    \hat{H}=-J\sum_{\la i,j\ra}\hat{S}_z^i \hat{S}_z^{j}-h\sum_{i}\hat{S}_x^i
+    \hat{H}=-J\sum_{\la i,j\ra}\hat{S}_z^i \hat{S}_z^{j}
 \end{align}
 Each site is specified by a set of coordinates ($x,y$) 
 since the lattice is now a 2D grid of sites (Note that in the Python code, $x$ and $y$ are replaced by $i$ and $j$ because 
@@ -110,7 +116,7 @@ indices inside loops and I don't intend to change that.
 The index number in the code is specified by $n$ and the coordinates by $i$ and $j$.
  There is no $x$ and $y$ anywhere in the code. Don't go looking for it). 
 
-\section{The Monte Carlo Method}
+\section{The Monte-Carlo Method}
 Obviously, solving (7) via direct diagonalisation is impossible. The 1D strip has a
 Hamiltonian matrix of 
 size $2^N\cross 2^N$, and in 2D, we need to compute not just $N$, but $N^2$ sites. Hence the 
@@ -120,12 +126,12 @@ With this, its safe to say that we need a new method of calculating the stable
  energies and spins of the system.
   Evidently we can't directly treat all the electrons, but what we can do, is look for a 
   classical approximation for their interactions. 
-We randomly sample $some$ electrons and calculating the energy for their interactions. 
+We randomly sample $some$ electrons and calculate the energy for their interactions. 
 It is easy to see that for a large enough sample size, 
 the interactions of this sampled group will be somewhat 
-representative of the exact solution. This is where Monte Carlo comes in. 
+representative of the exact solution. This is where Monte-Carlo comes in. 
 \subsection{Side Quest - Approximating $\pi$}
-To get a feel for the Monte Carlo method, lets consider a totally separate problem - approximating $\pi$. 
+To get a feel for the Monte-Carlo method, lets consider a totally separate problem - approximating $\pi$. 
 If we draw a square with side lengths $r$, and then inscribe a quarter circle inside that square, we know that 
 the ratio of areas between the square and quarter circle will be as follows. 
 \begin{align}
@@ -143,11 +149,25 @@ Of course, counting grains of sand is unrealistic
 (probably a task for a professor's team of graduate students), 
 and so we leave this mundane task to the computer. 
 $\\\\$
-\noindent To implement this on a computer, we can generate a random set of points $P_i(x_i,y_i)$, which 
+\noindent To implement this on a computer, 
+we can generate a random set of points $P_i(x_i,y_i)$, which 
 represents the random positions of all the grains of sands. Then, we can compute each points' radial distances from the origin (which we set to be one corner of the paper, at the center of the quarter circle), 
 $d_i=\sqrt{x_i^2+y_i^2}$. It is easy to see that for the $i$th point, if it lies inside the circle, then $d_i\leq r$. Conversely, if $d_i>r$, 
-then the point lies outside of the circle. We can thus approximate $\pi$ by quadrupling the ratio of the number of points of which $d_i\leq r$ to the total number of points. 
-
+then the point lies outside of the circle. We can thus approximate $\pi$ by quadrupling the ratio of the number of 
+points of which $d_i\leq r$ to the total number of points. 
+We can see how accurate this approximation is by implementing this algorithm, and then plotting 
+the value of the approximation to the number of "grains of sands dropped" (iterations). Doing so, 
+we obtain figure 1.
+\begin{center}
+    \includegraphics[scale=0.43]{monteCarlo.png}\\
+    (Fig. 1)
+\end{center}
+Our best approximation was $\pi=3.1415753$, which is not that far off (an error of $1.73\cross10^{-5}$)! On the graph, 
+the actual value for $\pi$ is denoted by the red line. 
+We see that the approximation is horrible for small iterations, 
+but get much better for large numbers. 
+This is because of the fact that the error goes like $\delta\sim1/\sqrt{N}$, so 
+for the Monte-Carlo approximation to be any good, we must run many many iterations. 
 \subsection{The Metropolis Algorithm}
 To apply this method to our problem, we can randomly sample each lattice site and calculate their interactions. However, 
 we immediately run into a problem - to calculate the interactions of any particular lattice site,
@@ -164,9 +184,8 @@ value for the energy
 we know them already). If there is no external magnetic field, the total 
 energy can thus be found by
 \begin{align}
-    E=-J\sum_{\la i,j\ra}S^i_zS_z^j
-\end{align}
-Now, we can randomly sample each lattice site, and try to flip the spin.
+    E=-J\sum_{\la i,j\ra}S_iS_j
+\end{align} Now, we can randomly sample each lattice site, and try to flip the spin.
  After we flip the spin,
 we calculate the energy again. 
 Intuitively, we know that 
@@ -229,7 +248,44 @@ $\\\\$
 for larger and larger lattices, convergence will be increasingly slow, and the number of iterations taken will be higher and higher. 
 For perspective, the convergence of a 25$\cross$25 lattice took my computer 39640 iterations! In practice, the calculations 
 of actual lattices (which may be millions of sites wide!
- Since each site represents one single electron) is done on world class supercomputers for months on end!
+ Since each site represents one single electron)
+  is done on world class supercomputers for months on end!
+$\\\\$
+\noindent Implementing this algoritm ($J=1,\ T=10^{-18}$), we first start with the random lattice on the left, 
+and as iterations go by, we arrive at the partially magnetised one in the, and eventually the 
+fully magnetised one on the right. 
+\begin{center}
+    \includegraphics[scale=.1]{noAlign.png}\ 
+    \includegraphics[scale=.1]{partAlign.png}\ 
+    \includegraphics[scale=.1]{fullAlign.png}\\[-3.9pt] 
+    (Fig. 2)
+\end{center}
+Since the speed of convergence scales with lattice size, this (30$\cross$ 30)
+is the largest lattice that my computer can bring to full convergence in a 
+reasonable amount of time. Now we know that the convergence happens when all spins are the same (aligned).
+We can thus try to work out the energy. Since $i$ and $j$ are nearest neighbour sites with two coordinates $(x,y)$, 
+we can expand our sum in (9) to 
+\begin{align}
+    E=-J\sum^N_x\sum^N_yS_{x,y}(S_{x+1,y}+S_{x,y+1})
+\end{align}
+Here, we sum to $N$ and implement periodic boundary conditions, where the $N+1$th site 
+loops back to the 0th site. Notice that regardless of the sign of the spins, the product is always positive if 
+they are to be all the same. Hence, (14) becomes 
+\begin{align}
+    E=-J\sum_x^N\sum_y^N\pm1(\pm1\pm1)=-J\sum_x^N\sum_y^N2=-2JN^2
+\end{align}
+Under temperatures of near 0, this should be the energy that 
+the system converges to. Now, for our run, we can also how the energy changes over the coruse of the
+whole process, as shown in figure 3.
+\begin{center}
+    \includegraphics[scale=.45]{energy_noMag.png}\\ 
+    (Fig. 3)
+\end{center}
+Indeed, it converges to $-2\cross1\cross30^2=-1800$, which is expected. Notice how jagged this curve is, and in some parts, the energy even goes up! However, 
+since I set the temeprature very low to make convergence possible (in a reasonable amount of time)
+, the "going up" 
+effects aren't all that visible unless you zoom in really hard. If we want 
+the stochastic part to be more visible, we increase the temperature to let more energy raising flips through. 
 
 \section{Temperature and Magnetisation}
 Here is where the interesting property of magnetism comes in. It is well known that 
@@ -248,9 +304,10 @@ of the electrons in the lattice to obtain the total magnetisation $M$ as follows
 \end{align}
 Which is the proper definition for magnetisation. We can now figure out how magnetised our 
 lattice is by first determining the equilibrium lattice as found above, and then 
-calculating the magnetisation by way of (15). If our temperature is sufficiently low, then 
+calculating the magnetisation the same way of how we found (15). If our temperature is sufficiently low, then 
 there will be negligible thermal fluctuations.  This means that the equilibrium state will 
-be comprised of a lattice filled with electrons of the same spin. Hence we can easily work out the sum in (14)
+be comprised of a lattice filled with electrons of the same spin. Hence we can easily 
+work out the sum in (16) if we sum to $N$ and implement the same periodic boundary conditions. 
 \begin{align}
     M=\sum_i(\pm1)=\pm N^2
 \end{align}
@@ -262,9 +319,17 @@ $\\\\$
 We can test the relationship between temeprature and magnetisation by
 simulating many lattices (using the methods introduced in previous sections) 
 under a range of $T$, and calculate their magnetisations at the end. After all the calculations, 
-we can plot $M$ and $T$ in the $y$ and $x$ axis respectively. Doing so, we observe that when temperature is increased from near 0, the magnetisation dosen't seem to be too affected. However, 
+we can plot $M$ and $T$ in the $y$ and $x$ axis respectively. Doing so, we obtain the
+ following.  
+\begin{center}
+    \includegraphics[scale=.5]{MagTemp_N=10.png}\\ 
+    (Fig. 4)
+\end{center}
+Notice that when temperature is increased from near 0, the magnetisation dosen't seem to be too affected. However, 
 past a certain point, magnetisation drops rapidly to near 0. This temperature is the "Curie Point", and 
-is where ferromagnetic materials like iron typically lose their magnetism. It is also important to note that 
+is where ferromagnetic materials like iron typically lose their magnetism. In Osanger's 
+exact solution, this point was determined to be at 2.269, which is close to our approximate
+point, which is at about 2.20 (Which is impressive considering our lattice size is only 10).  It is also important to note that 
 for large system $N\to\infty$, this drop happens as a discontinuity instead of just a rather steep slope as seen here. This is known as a "phase transition" as the 
 lattice stops being magnetised. 
 
@@ -272,7 +337,7 @@ lattice stops being magnetised.
 
 \section{External Magnetic Fields}
 We can now start to include external magnetisation in our model. If we add the magnitisation 
-term back into our totalenergy expression, we obtain 
+term back into our total energy expression, we obtain 
 \begin{align}
     E=-J\sum_{\la i,j\ra}S_iS_j-h\sum_iS_i
 \end{align}
@@ -286,29 +351,39 @@ if $|h|$ is large, a very large number will be added to $\Delta E$.
 This causes $\Delta E$ to become large, forcing the probability of an energy increasing spin to be small. It can 
 be thought of as a large magnetic field "forcing" the lattice to return to the ground state, 
 since anything else is made exponentially unlikely by the $h$ term. Conversely, for small $|h|$, it can be seen that 
-it has the opposite effect, promoting chaos and reducing convergence speed. It is also not a surprise that 
+it has the opposite effect, promoting chaos and reducing convergence speed. We can see
+this in action in our simulation. If we let $h=0.01$ (shown on th left) 
+and compare its
+results to $h=10^3$ (shown on the right), we obtain 
+\begin{center}
+    \includegraphics[scale=.33]{lowMag.png}\ \includegraphics[scale=.33]{highMag.png}\\ 
+    (Fig. 5)
+\end{center}
+Indeed, the one on the left has a much higher iteration count (at around 12000) compared to the one on the right 
+(at around 7000), indicating a slow convergence. Another interesting point
+ to note is that the left is more jagged (chaotic)
+than the right, since the "forcing effect" from $h$ is much less. It is also not a surprise that for a large enough lattice where convergence is not always easy, that
 a large magnetic field leads to high magnetisation, converging $|M| \sim  N^2$, while a weak magnetic 
-field leads to smaller magnetisations $|M|<<N^2$ as the lattice becomes disuniform.  
-
-\section{Pauli Matrices}
-The Pauli matrices used in this set of notes are as follows. We will work in units where $\hbar=1$. 
+field leads to smaller magnetisations $|M|<<N^2$ as the lattice becomes disuniform.
+\section{Appendix: Pauli Matrices}
+The Pauli matrices used in this set of notes are as follows. 
+We will work in units where $\hbar=k_B=1$. 
 \begin{align*}
-    \hat{S}_x&=\frac{1}{2}\begin{bmatrix}
+    \hat{S}_x&=\begin{bmatrix}
         0 & 1\\ 
         1& 0
     \end{bmatrix}\\
-    \hat{S}_y &= \frac{1}{2}
+    \hat{S}_y &= 
     \begin{bmatrix}
         0 & -i \\
         i & 0
     \end{bmatrix}\\ 
-    \hat{S}_z&=\frac{1}{2}\begin{bmatrix}
+    \hat{S}_z&=\begin{bmatrix}
         1 & 0\\ 
         0 & -1
     \end{bmatrix}
 \end{align*}
-This was chosen for the set of notes because electrons have spin $\pm1/2$. 
-Note that in the Python program for the 2D Ising model, I have opted for the 
-spin to be simplified to $\pm1$ to avoid floating point error. 
+Although electrons (and all fermions) have half-integer spins,
+I have opted for the electron spin here to be simplified to $\pm1$ to avoid floating point error in the Python program. 
 
 \end{document}

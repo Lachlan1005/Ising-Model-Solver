@@ -136,9 +136,6 @@ def spin(N:int, J:float, h:float)->list[tuple[float,float]]:
         n+=1
     return qubitList
 
-def spinBloch(N,J,h):
-    qubitSpins=spin(N,J,h)
-    
         
 #Vary J
 #groundState(11, -1,0.5, 0, 1, 0.01)
@@ -147,5 +144,5 @@ def spinBloch(N,J,h):
 #groundState(8, 1,-1, 1, 1, 0.01)
 
     
-print("spin (x,z): ", spin(10,100,1))
+#print("spin (x,z): ", spin(10,100,1))
 
