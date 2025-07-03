@@ -8,7 +8,7 @@ import os
 import twoDIsing as tDI
 
 
-def MagnetisationMetropolisFlips(N:int,J:float, T:float, maxIters:int=100000000, verbosity:bool=False, lattice:list[list[int]] | None =None):
+def MagnetisationMetropolisFlips(N:int,J:float, T:float, maxIters:int=88000, verbosity:bool=False, lattice:list[list[int]] | None =None):
     """
     Return the magnetisation of the lattice in its thermal equillibrium state under temperature T and coupling strength J. 
     Solve using the Monte Carlo method, implementing the Metropolis model of interaction* 
@@ -24,7 +24,7 @@ def MagnetisationMetropolisFlips(N:int,J:float, T:float, maxIters:int=100000000,
         lattice=tDI.gridGen(N)
     energyStable=0 
     iters=0
-    while energyStable<=500 and iters<=maxIters:
+    while energyStable<=160 and iters<=maxIters:
         i=rd.randint(0,N-1)
         j=rd.randint(0,N-1)
         if verbosity:
@@ -86,9 +86,10 @@ def magnetisationTemperature(N:int,J:float,Tmin:float,Tmax:float,dT:float):
         T+=dT
         i+=1
     plt.plot(temps,mags,color="black")
+    plt.title("Magnetisation vs Temperature, N="+str(N))
     plt.xlabel("Temperature")
     plt.ylabel("Magnetisation")
     plt.show()
     return temps, mags
 
-magnetisationTemperature(3,1,0.000000000000000000000001,3,0.01)
+magnetisationTemperature(10,1,1.5,3.2,0.01)

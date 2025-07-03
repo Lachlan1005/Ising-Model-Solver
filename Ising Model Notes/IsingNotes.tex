@@ -51,14 +51,14 @@ To find the total energy, we simply sum the energies from (2) and (3), giving
 \begin{align}
     \hat{H}=-J\sum_{n=0}^{N-1}\hat{S}_z^n \hat{S}_z^{n+1}-h\sum_{n=0}^N\hat{S}_x^n
 \end{align}
-Notice that the hamiltonian consists of two competing terms trying to influence the spins of the qubits: the interaction term and the field term. 
+Notice that the hamiltonian consists of two competing terms trying to influence the spins of the electrons: the interaction term and the field term. 
 When $J>>h$, the interaction term takes over, 
 and the spin will be aligned along the $z$-axis. Conversely, when 
 $h>>J$, the field will be strong enough to overpower the interactions, 
 leaving the spins aligned 
 along the field in the $x$-axis. 
 
-\section{Spins Operators of Qubits}
+\section{Spins Operators of electrons}
 Now, to use this hamiltonian, we first have to find each $S_z^n$ associated with the $n$th site. 
 To do this, we make use of the Pauli $z$ matrix, $S_z$. For example, for 3 lattice sites, we say that 
 \begin{align*}
@@ -72,7 +72,8 @@ to saying "there is only a component of spin at the site where the index matches
 the location of the particle". Therefore, the spin operator acts non-trivially only on its corresponding site, and as identity elsewhere.
 This can be generalised to higher numbers of sites, but generally, for $N$ sites, 
 there will be $N$ tensor products per site to compute the spins. To compute the $x$ spin in 
-the second term, we repeat the above process, replacing the Pauli $z$ matrix with the Pauli $x$ matrix. 
+the second term, we repeat the above process,
+ replacing the Pauli $z$ matrix with the Pauli $x$ matrix. 
 \section{Energy Levels}
 To find the energy levels, we need to solve the Schrodinger equation for its energy eigenvalues $E$, which is as follows 
 \begin{align}
@@ -84,20 +85,20 @@ energy eigenvalues $E$ will be an exponentially more arduous task with every inc
 energy levels, while solving for the eigenvectors $\ket{\psi}$ gives the state of the whole lattice.
 
 \section{Computing the Spins}
-The spins of each site can either be up or down. Since the qubits can have spin $S_z^n=\pm 1/2$, spin up will be 
+The spins of each site can either be up or down. Since the electrons can have spin $S_z^n=\pm 1/2$, spin up will be 
 assigned to $+1/2$ and spin down to $-1/2$. To obtain this spin, we first find the expectation value of the $\ket{\psi}$ computed in the last section 
 when applied to by $\hat{S}^n_z$ (computed in section 2), which gives 
 \begin{align}
     S^n_z=\bra{\psi}\hat{S}^n_z\ket{\psi}
 \end{align}
-This gives the $z$ spin for the $n$th qubit. 
-Applying this formula to each qubit from $n=0$ to $n=N$ will give the spins to all the qubits. To find the $x$-spin, 
+This gives the $z$ spin for the $n$th electron. 
+Applying this formula to each electron from $n=0$ to $n=N$ will give the spins to all the electrons. To find the $x$-spin, 
 the same process can be repeated but with the $\hat{S}^n_x$ computed in section 2.
 
 \section{Ising Model in 2 Dimensions}
 The Ising model can be further generalised into 2 dimensions. Now, for any 
 given site $i$, 
-the qubit can interact with any of its nearest neighbour 
+the electron can interact with any of its nearest neighbour 
 sites $j$. The Hamiltonian now reads 
 \begin{align}
     \hat{H}=-J\sum_{\la i,j\ra}\hat{S}_z^i \hat{S}_z^{j}-h\sum_{i}\hat{S}_x^i
@@ -116,10 +117,13 @@ size $2^N\cross 2^N$, and in 2D, we need to compute not just $N$, but $N^2$ site
 Hamiltonian matrix of (7) will have dimensions $2^{N^2}\cross 2^{N^2}$ - a ridiculously large number that 
  even the best supercomputers of the world will run into problems trying to solve for a relatively small lattice. 
 With this, its safe to say that we need a new method of calculating the stable
- energies and spins of the system. Evidently we can't directly treat all the qubits, but what we can do, 
-is randomly sample $some$ qubits and calculating the energy for their interactions. 
+ energies and spins of the system.
+  Evidently we can't directly treat all the electrons, but what we can do, is look for a 
+  classical approximation for their interactions. 
+We randomly sample $some$ electrons and calculating the energy for their interactions. 
 It is easy to see that for a large enough sample size, 
-the interactions of this sampled group will be somewhat representative of the exact solution. This is where Monte Carlo comes in. 
+the interactions of this sampled group will be somewhat 
+representative of the exact solution. This is where Monte Carlo comes in. 
 \subsection{Side Quest - Approximating $\pi$}
 To get a feel for the Monte Carlo method, lets consider a totally separate problem - approximating $\pi$. 
 If we draw a square with side lengths $r$, and then inscribe a quarter circle inside that square, we know that 
@@ -150,7 +154,8 @@ we immediately run into a problem - to calculate the interactions of any particu
 we must know the spins of its neighbours! And to obtain the spins of the neighbours, we must calculate their interactions 
 with the neighbours neighbours! And this goes on and on until we have to exactly calculate for the whole lattice - which we cannot do. 
 So how to we calculate the interaction of a single site 
-without knowing the details of its neighbours? This is where the Metropolis Algorithm comes in. 
+without knowing the details of its neighbours? 
+Again, we turn to another classical approximation. This is where the Metropolis Algorithm comes in. 
 $\\\\$
 \noindent Suppose we have a lattice with sites that has totally random spins. 
 Since we know the spins (they are random), the Hamiltonian of (7) reduces to a simple numerical 
@@ -174,7 +179,7 @@ However, that is not very efficient since the energy has to be recomputed twice 
 iteration, meaning the computer has to add up the spins from all $N\cross N$ lattice site twice. 
 So lets find an expression for $\Delta E$ that dosen't require this computation. 
 $\\\\$
-\noindent We can represent the qubit $S_i=S_{x,y}$ at site $i=(x,y$) flipping by $S_{i}\to-S_{i}$. We know that this will 
+\noindent We can represent the electron $S_i=S_{x,y}$ at site $i=(x,y$) flipping by $S_{i}\to-S_{i}$. We know that this will 
 affect only the terms that have $S_i$ as a factor, namely the terms containing its nearest neighbours. We can write out the affected terms as follows 
 \begin{align}
     f=S_{x,y}S_{x+1, y}+S_{x-1, y}S_{x,y}+S_{x,y}S_{x, y+1}+S_{x,y-1}S_{x,y}
@@ -182,12 +187,12 @@ affect only the terms that have $S_i$ as a factor, namely the terms containing i
 Following the spin, $f$ will also flip signs because all the $S_i$ inside has 
 its sign flipped. We can subtract the terms $Jf$ from the energy,
  which gives the part of the energy that 
-remains unaffected by the qubit flip. 
+remains unaffected by the electron flip. 
 Following this, we can add $-Jf$, which is the new 
 part of the energy to the system. Overall, we obtain an expression 
 for the new energy, which we denote by $E'$ as follows
 \begin{align}
-    E'=-J\sum_{\la i,j\ra}S^i_zS_z^j-Jf+(-Jf)=E-2Jf
+    E'=-J\sum_{\la i,j\ra}S_iS_j-Jf+(-Jf)=E-2Jf
 \end{align}
 The change in energy can then be found as 
 \begin{align}
@@ -225,6 +230,66 @@ for larger and larger lattices, convergence will be increasingly slow, and the n
 For perspective, the convergence of a 25$\cross$25 lattice took my computer 39640 iterations! In practice, the calculations 
 of actual lattices (which may be millions of sites wide!
  Since each site represents one single electron) is done on world class supercomputers for months on end!
+
+\section{Temperature and Magnetisation}
+Here is where the interesting property of magnetism comes in. It is well known that 
+when more spins are aligned, the object will behave magnetically. We can measure this 
+ability to interact with the magnetic field by a quantity known as magnetisation. Here, 
+each spin can either be $+1$ or $-1$, so if two qubits have the same spin, 
+we can add them up
+to either $\pm2$ depedning on their sign,
+ which means the overall effect is a stronger magnetisation, 
+since the magnitude is increased. Conversely, if they have different signs, then it will add 
+up to 0, since the spins cancel each other out.
+ We can generalise this idea to add up all the spins 
+of the electrons in the lattice to obtain the total magnetisation $M$ as follows 
+\begin{align}
+    M=\sum_{i}S_i
+\end{align}
+Which is the proper definition for magnetisation. We can now figure out how magnetised our 
+lattice is by first determining the equilibrium lattice as found above, and then 
+calculating the magnetisation by way of (15). If our temperature is sufficiently low, then 
+there will be negligible thermal fluctuations.  This means that the equilibrium state will 
+be comprised of a lattice filled with electrons of the same spin. Hence we can easily work out the sum in (14)
+\begin{align}
+    M=\sum_i(\pm1)=\pm N^2
+\end{align}
+The $N^2$ is due to the fact that we are summing over all sites $i$, and we have $N^2$ sites in our 2D square lattice.
+This shows that as $T\to0$, we will be able to achieve maximum magnetisation $M\to\pm N^2$. Recall from last section that 
+as temperature increases, the spins tend to not line up. Therefore, from a qualitative view, 
+magnetisation should decrease as temperature increases, and that is exactly what happens...sort of. 
+$\\\\$
+We can test the relationship between temeprature and magnetisation by
+simulating many lattices (using the methods introduced in previous sections) 
+under a range of $T$, and calculate their magnetisations at the end. After all the calculations, 
+we can plot $M$ and $T$ in the $y$ and $x$ axis respectively. Doing so, we observe that when temperature is increased from near 0, the magnetisation dosen't seem to be too affected. However, 
+past a certain point, magnetisation drops rapidly to near 0. This temperature is the "Curie Point", and 
+is where ferromagnetic materials like iron typically lose their magnetism. It is also important to note that 
+for large system $N\to\infty$, this drop happens as a discontinuity instead of just a rather steep slope as seen here. This is known as a "phase transition" as the 
+lattice stops being magnetised. 
+
+
+
+\section{External Magnetic Fields}
+We can now start to include external magnetisation in our model. If we add the magnitisation 
+term back into our totalenergy expression, we obtain 
+\begin{align}
+    E=-J\sum_{\la i,j\ra}S_iS_j-h\sum_iS_i
+\end{align}
+Where $h$ is the magnetic field strength we had at the start. Repeating our process which we used to find (10) for this energy, 
+we can see that 
+\begin{align}
+    \Delta E=2S_i(Jf+h)
+\end{align}
+Here, we see that the magnetic field contributes to the energy difference. This means 
+if $|h|$ is large, a very large number will be added to $\Delta E$. 
+This causes $\Delta E$ to become large, forcing the probability of an energy increasing spin to be small. It can 
+be thought of as a large magnetic field "forcing" the lattice to return to the ground state, 
+since anything else is made exponentially unlikely by the $h$ term. Conversely, for small $|h|$, it can be seen that 
+it has the opposite effect, promoting chaos and reducing convergence speed. It is also not a surprise that 
+a large magnetic field leads to high magnetisation, converging $|M| \sim  N^2$, while a weak magnetic 
+field leads to smaller magnetisations $|M|<<N^2$ as the lattice becomes disuniform.  
+
 \section{Pauli Matrices}
 The Pauli matrices used in this set of notes are as follows. We will work in units where $\hbar=1$. 
 \begin{align*}

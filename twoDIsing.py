@@ -40,12 +40,12 @@ def hamiltonian(N:int,J:float,lattice:list[list[int]] | None =None):
         #    print("(", i, ",",j,")")
             j+=1
         i+=1
-    return -J*totalEnergy/2
+    return -J*totalEnergy
 def magnetisation(N:int,lattice:list[list[int]] | None =None):
     """
     Return the magnetisation of an NxN Ising lattice 
     """
-    if lattice==None:
+    if lattice is None:
         lattice=gridGen(N)
     mag=0 
     i=0 
@@ -110,17 +110,16 @@ def metropolisFlips(N:int,J:float, T:float, maxIters:int=10000, fpsCustom:int=10
         lattice=gridGen(N)
     energyStable=0 
     iters=0
-    while energyStable<=500 and iters<=maxIters:
+    while energyStable<=1000 and iters<=maxIters:
         i=rd.randint(0,N-1)
         j=rd.randint(0,N-1)
         if verbosity:
             print("Trying to flip ", (j,i))
-        lattice[i][j]=-lattice[i][j]
         newEnergy= hamiltonian(N,J,lattice)
         energies.append(newEnergy)
         iterationList.append(iters)
         f = (lattice[(i+1)%N][j] +lattice[(i-1)%N][j] +lattice[i][(j+1)%N] +lattice[i][(j-1)%N])
-        dE=-2*J*lattice[i][j]*f
+        dE=2*J*lattice[i][j]*f
         if verbosity:
             print("Energy change if successsful:", dE)
         if dE>0:
@@ -128,17 +127,18 @@ def metropolisFlips(N:int,J:float, T:float, maxIters:int=10000, fpsCustom:int=10
             transProb=np.exp(-b*dE)
             r=rd.random()
             if r>transProb:
-                lattice[i][j]=-lattice[i][j] #flip back the lattice to original
                 dE=0
                 energyStable+=1
                 if verbosity:
                     print("Flip failed")
             else:
                 energyStable=0
+                lattice[i][j]=-lattice[i][j]
                 if verbosity:
                     print("Flip successful")
         elif dE<=0:
             energyStable=0
+            lattice[i][j]=-lattice[i][j]
             if verbosity:
                 print("Flip successful")
         if verbosity:
@@ -192,8 +192,8 @@ def terminalMetropolis():
         fancy=False
     else:
         print("Simulation Conditions: ")
-        N=int(input("Enter the size of the lattice (Number of qubits on each side): "))
-        J=float(input("Enter the coupling constant of the qubits: "))
+        N=int(input("Enter the size of the lattice (Number of particles on each side): "))
+        J=float(input("Enter the coupling constant of the particles: "))
         T=float(input("Enter the temperature (In multiples of the coupling constant): "))
         print(100*"-")
         print("Computational Parameters: ")
@@ -205,5 +205,5 @@ def terminalMetropolis():
             fancy=True 
     return metropolisFlips(N,J,T,maxIters,fpsCustom, fancy)
 
-#metropolisFlips(50,1,0.0000000001,30000,5000,False)
-terminalMetropolis()   
+#metropolisFlips(10,1,0.0000000001,30000,5000,False)
+#terminalMetropolis()   
