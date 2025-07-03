@@ -8,6 +8,8 @@ import random as rd
 import os
 import twoDIsing_NoMagField as tDI
 
+#Git push test
+
 def metropolisMagnetisation(N:int,J:float, T:float, H:float, maxIters:int=50000, fpsCustom=100, verbosity:bool=True, lattice:list[list[int]] | None =None):
     """
     Return the lattice in its thermal equillibrium state under temperature T and coupling strength J. 
