@@ -4,8 +4,8 @@ This project provides the tools to various Ising models based on the Hamiltonian
 $$\hat{H}=-J\sum_{\langle i,j\rangle} \hat{S}_z^i\hat{S}_z^j-h\sum_i\hat{S}_z^i$$
 
 Included Models and Methods:
-- The 2D Ising model, solved using a classical Metropolis Monte-Carlo approximation
 - The 1D Quantum Ising model, solved using exact diagonalisation
+- The 2D Ising model, solved using a classical Metropolis Monte-Carlo approximation
 
 The pdf in the "Ising Model Notes" folder contain more detailed theoretical background information on the subject matter. Preset solutions are available for viewing in the "Saved Runs" folder. 
 
