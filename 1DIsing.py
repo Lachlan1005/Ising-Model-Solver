@@ -136,7 +136,15 @@ def spin(N:int, J:float, h:float)->list[tuple[float,float]]:
         n+=1
     return qubitList
 
-        
+
+def terminalSpin():
+    print(100*"=")
+    print("Welcome to the 1D Ising Model Solver.")
+    N=int(input("Enter the number of qubits in the lattice: "))
+    J=float(input("Enter the interaction strength: "))
+    h=float(input("Enter the external magnetic field: "))
+    print(100*"=")
+    return spin(N,J,h)
 #Vary J
 #groundState(11, -1,0.5, 0, 1, 0.01)
 
@@ -146,3 +154,4 @@ def spin(N:int, J:float, h:float)->list[tuple[float,float]]:
     
 #print("spin (x,z): ", spin(10,100,1))
 
+print(terminalSpin())
