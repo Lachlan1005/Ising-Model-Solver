@@ -3,7 +3,7 @@ This project provides the tools to various Ising models based on the Hamiltonian
 
 $$\hat{H}=-J\sum_{\langle i,j\rangle} \hat{S}_z^i\hat{S}_z^j-h\sum_i\hat{S}_z^i$$
 
-Included Models and Methods:
+Where operators are replaced by discrete spin variables ($$\hat{S}_z\to S=\pm1$$) in the 2D classical approximation. Included Models and Methods:
 - The 1D Quantum Ising model, solved using exact diagonalisation
 - The 2D Ising model, solved using a classical Metropolis Monte-Carlo approximation
 
