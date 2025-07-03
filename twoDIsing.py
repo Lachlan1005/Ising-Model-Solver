@@ -205,5 +205,5 @@ def terminalMetropolis():
             fancy=True 
     return metropolisFlips(N,J,T,maxIters,fpsCustom, fancy)
 
-#metropolisFlips(10,1,0.0000000001,30000,5000,False)
+#metropolisFlips(10,1,0.000000001,30000,5000,False)
 #terminalMetropolis()   
