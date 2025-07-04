@@ -13,7 +13,8 @@ The pdf in the "Ising Model Notes" folder contain more detailed theoretical back
 Run "1DIsing.py" to solve for the 1D Ising model under some external magnetic field. 
 
 ## 2D Ising Model 
-Run "twoDIsing_MagField.py" to solve the 2D Ising model under some external magnetic field. Run "tempMagnetisation.py" to plot temperature against magnetisation for the lattice. 
+The main portion of this project. Run "twoDIsing_MagField.py" to solve the 2D Ising model under some external magnetic field. In the output 
+graphics, a blue dot/square represents a spin up site while a red one represents a spin down site. Run "tempMagnetisation.py" to plot temperature against magnetisation for the lattice. 
 
 ## Notes and Saved Runs
 To view the fully rendered notes, visit the "Ising Model Notes" Folder and open "IsingNotes.pdf". Pre-saved solutions/quenches to the 2D Ising model are available as videos in the "Saved Runs Folder" and are too large
