@@ -253,7 +253,7 @@ of actual lattices (which may be millions of sites wide!
 $\\\\$
 \noindent Implementing this algoritm ($J=1,\ T=10^{-18}$), we first start with the random lattice on the left, 
 and as iterations go by, we arrive at the partially magnetised one in the middle, and eventually the 
-fully magnetised one on the right. 
+fully magnetised one on the right (Blue represents spin up while red represents spin down). 
 \begin{center}
     \includegraphics[scale=.1]{noAlign.png}\ 
     \includegraphics[scale=.1]{partAlign.png}\ 
@@ -262,8 +262,8 @@ fully magnetised one on the right.
 \end{center}
 Since the speed of convergence scales with lattice size, this (30$\cross$ 30)
 is the largest lattice that my computer can bring to full convergence in a 
-reasonable amount of time. Now we know that the convergence happens when all spins are the same (aligned).
-We can thus try to work out the energy. Since $i$ and $j$ are nearest neighbour sites with two coordinates $(x,y)$, 
+reasonable amount of time. We see that convergence happens when all spins are the same (aligned).
+We can thus try to work out this minimum energy. Since $i$ and $j$ are nearest neighbour sites with two coordinates $(x,y)$, 
 we can expand our sum in (9) to 
 \begin{align}
     E=-J\sum^N_x\sum^N_yS_{x,y}(S_{x+1,y}+S_{x,y+1})
@@ -285,7 +285,7 @@ Indeed, it converges to $-2\cross1\cross30^2=-1800$, which is expected. Notice h
 since I set the temeprature very low to make convergence possible (in a reasonable amount of time)
 , the "going up" 
 effects aren't all that visible unless you zoom in really hard. If we want 
-the stochastic part to be more visible, we increase the temperature to let more energy raising flips through. 
+the stochastic part to be more visible, we can increase the temperature to let more energy raising flips through. 
 
 \section{Temperature and Magnetisation}
 Here is where the interesting property of magnetism comes in. It is well known that 
