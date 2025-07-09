@@ -53,7 +53,7 @@ found by
 Where the negative sign is once again due to convention. 
 To find the total energy, we simply sum the energies from (2) and (3), giving 
 \begin{align}
-    \hat{H}=-J\sum_{n=0}^{N-2}\hat{S}_z^n \hat{S}_z^{n+1}-h\sum_{n=0}^N\hat{S}_x^n
+    \hat{H}=-J\sum_{n=0}^{N-2}\hat{S}_z^n \hat{S}_z^{n+1}-h\sum_{n=0}^{N-1}\hat{S}_x^n
 \end{align}
 Notice that the hamiltonian consists of two competing terms trying to influence the spins of the electrons: the interaction term and the field term. 
 When $J>>h$, the interaction term takes over, 
@@ -327,7 +327,7 @@ we can plot $M$ and $T$ in the $y$ and $x$ axis respectively. Doing so, we obtai
 \end{center}
 Notice that when temperature is increased from near 0, the magnetisation dosen't seem to be too affected. However, 
 past a certain point, magnetisation drops rapidly to near 0. This temperature is the "Curie Point", and 
-is where ferromagnetic materials like iron typically lose their magnetism. In Osanger's 
+is where ferromagnetic materials like iron typically lose their magnetism. In Onsager's 
 exact solution, this point was determined to be at 2.269, which is close to our approximate
 point, which is at about 2.20 (Which is impressive considering our lattice size is only 10).  It is also important to note that 
 for large system $N\to\infty$, this drop happens as a discontinuity instead of just a rather steep slope as seen here. This is known as a "phase transition" as the 
